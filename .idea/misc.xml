@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="pnl_env" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="pnl_env" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="pnl" project-jdk-type="Python SDK" />
 </project>
