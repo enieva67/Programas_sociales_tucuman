@@ -62,7 +62,24 @@ if provincia_seleccionada != 'Todas':
         datos_filtrados =pro_por_min[(pro_por_min['Jurisdicción'] == provincia_seleccionada) & ( pro_por_min['Ministerio/ Organismo descentralizado']==ministerio_seleccionado)].sort_values(by=['Nombre Programa'],ascending=False)
         datos_filtrados['Clasificador A - Temática'] = datos_filtrados['Clasificador A - Temática'].apply(eliminar_numero_caracter)
         df=load_dat()
-        datos_fil= df[(df['Jurisdicción'] == provincia_seleccionada) & (
+        lista_secretarias =df[(df['Jurisdicción'] == provincia_seleccionada) & (
+                    df['Ministerio/ Organismo descentralizado'] == ministerio_seleccionado)]['Secretaría '].dropna().unique().tolist()
+        lista_secretarias+=df[(df['Jurisdicción'] == provincia_seleccionada) & (
+                    df['Ministerio/ Organismo descentralizado'] == ministerio_seleccionado)]['Sub Secretaría '].dropna().unique().tolist()
+        lista_secretarias.insert(0, 'Todas')
+        secretaria_seleccionada = st.sidebar.selectbox("Selecciona una Secretaría o Subsecretaría: ", lista_secretarias)
+
+        if secretaria_seleccionada != 'Todas':
+            datos_fil = df[(df['Jurisdicción'] == provincia_seleccionada) & (
+                    df['Ministerio/ Organismo descentralizado'] == ministerio_seleccionado) & (
+                (df['Secretaría '] == secretaria_seleccionada)|(df['Sub Secretaría '] == secretaria_seleccionada) )][
+                ['Nombre Programa', 'Objetivo general',
+                 'Objetivos específicos', 'Normativa', 'Población destinataria',
+                 'Requisitos de Accesibilidad', 'Criterios de elegibilidad',
+                 '¿Cuál es el alcance del programa?', 'Prestación']]
+
+        else:
+            datos_fil= df[(df['Jurisdicción'] == provincia_seleccionada) & (
                     df['Ministerio/ Organismo descentralizado'] == ministerio_seleccionado)][['Nombre Programa','Objetivo general',
        'Objetivos específicos', 'Normativa', 'Población destinataria',
        'Requisitos de Accesibilidad', 'Criterios de elegibilidad',
